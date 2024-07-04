@@ -22,9 +22,14 @@ class _SignInState extends State<SignIn> {
   final focusNodePassword = FocusNode();
 
   Future<void> _saveCredentials(String email, String username) async {
-    final prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', email);
     await prefs.setString('username', username);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -166,26 +171,24 @@ class _SignInState extends State<SignIn> {
               NormalButton(
                 buttonText: 'Sign In',
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
-                onPressed: () {
+                onPressed: () async {
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty) {
-                    _saveCredentials(
+                    await _saveCredentials(
                         emailController.text, emailController.text);
                     emailController.clear();
                     passwordController.clear();
+                    if (!context.mounted) return;
                     Navigator.pushNamed(context, "/menu");
                   } else {
                     showCustomAlert(
                       context: context,
-                      isSecondButton: true,
-                      primaryButtonOnTap: () {
-                        print("Primary button tapped");
-                        Navigator.of(context).pop();
-                      },
-                      secondaryButtonOnTap: () {
-                        print("Second button tapped");
-                        Navigator.of(context).pop();
-                      },
+                      title: "Invalid Credentials",
+                      message:
+                          "Please enter your credentials, make sure not to leave any field empty.",
+                      primaryButtonText: "OK",
+                      icon: const Icon(Icons.highlight_remove_rounded,
+                          color: Colors.red, size: 40),
                     );
                   }
                   //   BlocProvider.of<UserBloc>(context).add(SignInUserEvent(

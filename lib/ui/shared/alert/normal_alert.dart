@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void showCustomAlert(
     {required BuildContext context,
@@ -10,7 +9,7 @@ void showCustomAlert(
     VoidCallback? primaryButtonOnTap,
     VoidCallback? secondaryButtonOnTap,
     bool isSecondButton = false,
-    Icon icon = const Icon(Icons.warning, color: Colors.red, size: 40)}) {
+    Icon? icon = const Icon(Icons.warning, color: Colors.red, size: 40)}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -22,7 +21,8 @@ void showCustomAlert(
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            icon,
+            const SizedBox(height: 7.5),
+            icon ?? const SizedBox(),
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
@@ -54,7 +54,9 @@ void showCustomAlert(
                     onTap: () => primaryButtonOnTap != null
                         ? primaryButtonOnTap()
                         : (!isSecondButton
-                            ? secondaryButtonOnTap!()
+                            ? secondaryButtonOnTap != null
+                                ? secondaryButtonOnTap()
+                                : Navigator.of(context).pop()
                             : Navigator.of(context).pop()),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 15),
@@ -64,11 +66,12 @@ void showCustomAlert(
                         ),
                       ),
                       child: Text(
-                        secondaryButtonText,
+                        primaryButtonText,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.width * 0.045,
                         ),
                       ),
                     ),
@@ -94,12 +97,13 @@ void showCustomAlert(
                               ),
                             )),
                         child: Text(
-                          primaryButtonText,
+                          secondaryButtonText,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             // color: Colors.white,
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.width * 0.04,
                           ),
                         ),
                       ),
