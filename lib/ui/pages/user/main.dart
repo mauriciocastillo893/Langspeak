@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:langspeak/ui/shared/app_bar/normal_app_bar.dart';
-import 'package:langspeak/ui/shared/bottom_navigation_bar/normal_bottom_navigation_bar.dart';
 import 'package:langspeak/ui/shared/season/season_iu_card.dart';
 
 class Main extends StatefulWidget {
@@ -43,26 +42,33 @@ class _MainState extends State<Main> {
     },
   ];
 
+  final screens = [
+    '/menu',
+    '/main-chat',
+    '/store',
+    '/settings',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const NormalAppBar(),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: _seasonData.map((season) {
-                return SeasonIuCard(
-                  margin: EdgeInsets.zero,
-                  season: season['season'] as String,
-                  seasonName: season['season_name'] as String,
-                  chapters: season['chapters'] as List<Map<String, dynamic>>,
-                );
-              }).toList(),
-            ),
+      appBar: const NormalAppBar(),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _seasonData.map((season) {
+              return SeasonIuCard(
+                margin: EdgeInsets.zero,
+                season: season['season'] as String,
+                seasonName: season['season_name'] as String,
+                chapters: season['chapters'] as List<Map<String, dynamic>>,
+              );
+            }).toList(),
           ),
         ),
-        bottomNavigationBar: NormalBottomNavigationBar());
+      ),
+    );
   }
 }

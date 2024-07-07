@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class NormalBottomNavigationBar extends StatefulWidget {
-  const NormalBottomNavigationBar({super.key});
+  final int selectedIndex;
+  final ValueChanged<int> onItemSelected;
+
+  const NormalBottomNavigationBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
 
   @override
   State<NormalBottomNavigationBar> createState() =>
@@ -9,60 +16,63 @@ class NormalBottomNavigationBar extends StatefulWidget {
 }
 
 class _NormalBottomNavigationBarState extends State<NormalBottomNavigationBar> {
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: const Color.fromRGBO(51, 56, 78, 1),
       height: MediaQuery.of(context).size.height * 0.09,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildNavItem(Icons.chat, 0, 'Chats'),
-          buildNavItem(Icons.update, 1, 'Updates'),
-          buildNavItem(Icons.group, 2, 'Communities'),
-          buildNavItem(Icons.call, 3, 'Calls'),
+          buildNavItem(Icons.home_outlined, Icons.home, 0, 'Home'),
+          buildNavItem(Icons.chat_outlined, Icons.chat, 1, 'Chats'),
+          buildNavItem(
+              Icons.store_mall_directory_outlined, Icons.store, 2, 'Store'),
+          buildNavItem(Icons.settings_outlined, Icons.settings, 3, 'Settings'),
         ],
       ),
     );
   }
 
-  Widget buildNavItem(IconData icon, int index, String label) {
-    final bool isSelected = currentIndex == index;
+  Widget buildNavItem(
+      IconData iconOutlined, IconData iconFilled, int index, String label) {
+    final bool isSelected = widget.selectedIndex == index;
     final Color color =
         isSelected ? Colors.white : const Color.fromARGB(255, 190, 190, 190);
+    final IconData icon = isSelected ? iconFilled : iconOutlined;
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          currentIndex = index;
-        });
+        widget.onItemSelected(index);
       },
       child: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        width: MediaQuery.of(context).size.width * 0.225,
+        height: MediaQuery.of(context).size.height * 0.08,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            if (isSelected)
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  // alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+            Positioned(
+              top: 5.5,
+              child: AnimatedContainer(
+                width:
+                    isSelected ? MediaQuery.of(context).size.width * 0.18 : 0,
+                height: MediaQuery.of(context).size.height * 0.035,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.fastOutSlowIn,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.blue.withOpacity(0.9)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
+            ),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(icon, color: color),
-                const SizedBox(height: 2),
+                const SizedBox(height: 6),
                 Text(
                   label,
                   style: TextStyle(color: color),

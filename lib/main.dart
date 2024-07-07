@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_bloc.dart';
 import 'package:langspeak/domain/usecase/user_usecase/user_usecase.dart';
 import 'package:langspeak/infrastructure/driven_adapters/api/user_api/user_api.dart';
-import 'package:langspeak/ui/pages/user/main.dart';
+import 'package:langspeak/ui/pages/base_screen.dart';
 import 'package:langspeak/ui/pages/user/sign_up.dart';
 import 'package:langspeak/ui/pages/user/sing_in.dart';
 
@@ -37,7 +37,12 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const SignIn(),
           '/sign-up': (context) => const SignUp(),
-          '/menu': (context) => const Main(),
+          '/menu': (context) => const BaseScreen(
+                initialIndex: 0,
+              ),
+          '/chat': (context) => const BaseScreen(initialIndex: 1),
+          '/store': (context) => const BaseScreen(initialIndex: 2),
+          '/settings': (context) => const BaseScreen(initialIndex: 3),
         },
       ),
     );
