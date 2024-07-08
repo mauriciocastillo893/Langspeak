@@ -3,6 +3,7 @@ import 'package:langspeak/ui/pages/chats/main_chat_screen.dart';
 import 'package:langspeak/ui/pages/store/main_store_screen.dart';
 import 'package:langspeak/ui/pages/user/main.dart';
 import 'package:langspeak/ui/pages/user/settings.dart';
+import 'package:langspeak/ui/shared/app_bar/normal_app_bar.dart';
 import 'package:langspeak/ui/shared/bottom_navigation_bar/normal_bottom_navigation_bar.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -39,6 +40,7 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const NormalAppBar(),
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens,

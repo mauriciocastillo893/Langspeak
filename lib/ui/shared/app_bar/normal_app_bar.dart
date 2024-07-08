@@ -56,7 +56,7 @@ class _NormalAppBarState extends State<NormalAppBar> {
             alignment: Alignment.bottomLeft,
             child: Container(
                 width: double.infinity,
-                margin: EdgeInsets.only(top: 8),
+                margin: const EdgeInsets.only(top: 8),
                 color: const Color.fromRGBO(21, 106, 142, 1),
                 child: const NormalText(
                   text: "LANGSPEAK: ONE CLICK FOR THE FUTURE",

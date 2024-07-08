@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:langspeak/ui/shared/app_bar/normal_app_bar.dart';
 import 'package:langspeak/ui/shared/season/season_iu_card.dart';
 
 class Main extends StatefulWidget {
@@ -52,7 +51,6 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const NormalAppBar(),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
