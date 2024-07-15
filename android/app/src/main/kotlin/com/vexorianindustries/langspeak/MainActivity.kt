@@ -1,4 +1,4 @@
-package com.example.langspeak
+package com.vexorianindustries.langspeak
 
 import io.flutter.embedding.android.FlutterActivity
 

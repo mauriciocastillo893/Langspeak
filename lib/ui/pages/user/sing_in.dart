@@ -7,6 +7,7 @@ import 'package:langspeak/ui/shared/button/normal_button.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -29,6 +30,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   void initState() {
+    FlutterNativeSplash.remove();
     super.initState();
   }
 

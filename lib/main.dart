@@ -6,8 +6,11 @@ import 'package:langspeak/infrastructure/driven_adapters/api/user_api/user_api.d
 import 'package:langspeak/ui/pages/base_screen.dart';
 import 'package:langspeak/ui/pages/user/sign_up.dart';
 import 'package:langspeak/ui/pages/user/sing_in.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
+  FlutterNativeSplash.preserve(
+      widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
   runApp(const MyApp());
 }
 

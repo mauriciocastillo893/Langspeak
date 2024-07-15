@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
@@ -41,6 +41,8 @@ dependencies:
   shared_preferences: ^2.2.3
   clipboard: ^0.1.3
   image_picker: ^1.1.2
+  change_app_package_name: ^1.3.0
+  flutter_native_splash: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +54,22 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  min_sdk_android: 21
+  image_path: "assets/logos/logo.png"
+  adaptive_icon_background: "#33384E"
+  adaptive_icon_foreground: "assets/logos/logo.png"
+  
+flutter_native_splash:
+  color: "#42a5f5"  # Elige el color que desees para la pantalla de splash
+  image: "assets/splash/langspeak_splash.png"  # Ruta de la imagen para la pantalla de splash
+  android: true
+  ios: true
+  web: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -67,6 +84,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/logos/
+    - assets/splash/
   # - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:langspeak/domain/models/chapter_content_model/chapter_content_model.dart';
+import 'package:langspeak/ui/pages/chapters/chapter_screen.dart';
 
 class SeasonIuCard extends StatefulWidget {
   final EdgeInsets margin;
   final String season;
   final String seasonName;
+  final ChapterUserContent? content;
   final List<Map<String, dynamic>> chapters;
 
   const SeasonIuCard({
     super.key,
     this.margin = const EdgeInsets.only(top: 16),
+    this.content,
     required this.season,
     required this.seasonName,
     required this.chapters,
@@ -183,15 +187,23 @@ class _SeasonIuCardState extends State<SeasonIuCard> {
                                 },
                               ),
                             ),
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: const Color.fromRGBO(38, 154, 204, 1),
-                                borderRadius: BorderRadius.circular(10),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ChapterScreen(
+                                            content: widget.content,
+                                          ))),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(38, 154, 204, 1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(Icons.menu_book_rounded,
+                                    size: 50, color: Colors.white),
                               ),
-                              child: const Icon(Icons.menu_book_rounded,
-                                  size: 50, color: Colors.white),
                             ),
                             Container(
                               margin: EdgeInsets.only(

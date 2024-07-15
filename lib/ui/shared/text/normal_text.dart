@@ -13,7 +13,7 @@ class NormalText extends StatelessWidget {
     super.key,
     this.text = "Text not defined",
     this.padding = const EdgeInsets.all(0),
-    this.textStyle = const TextStyle(color: Colors.white),
+    this.textStyle = const TextStyle(color: Colors.white, height: 1.15),
     this.textAlign = TextAlign.left,
     this.alignment = Alignment.center,
     this.overflow = TextOverflow.clip,
