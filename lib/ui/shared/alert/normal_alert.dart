@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-void showCustomAlert(
-    {required BuildContext context,
-    String title = 'Alert not configured properly',
-    String message = 'Please configure the alert properly to show the message.',
-    String primaryButtonText = 'Allow',
-    String secondaryButtonText = "Don't Allow",
-    VoidCallback? primaryButtonOnTap,
-    VoidCallback? secondaryButtonOnTap,
-    bool isSecondButton = false,
-    Icon? icon = const Icon(Icons.warning, color: Colors.red, size: 40)}) {
-  showDialog(
+Future<bool?> showCustomAlert({
+  required BuildContext context,
+  String title = 'Alert not configured properly',
+  String message = 'Please configure the alert properly to show the message.',
+  String primaryButtonText = 'Allow',
+  String secondaryButtonText = "Don't Allow",
+  Future<bool?> Function()? primaryButtonOnTap,
+  Future<bool?> Function()? secondaryButtonOnTap,
+  bool isSecondButton = false,
+  Icon? icon = const Icon(Icons.warning, color: Colors.red, size: 40),
+}) {
+  return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -51,13 +52,14 @@ void showCustomAlert(
               children: [
                 Expanded(
                   child: InkWell(
-                    onTap: () => primaryButtonOnTap != null
-                        ? primaryButtonOnTap()
-                        : (!isSecondButton
-                            ? secondaryButtonOnTap != null
-                                ? secondaryButtonOnTap()
-                                : Navigator.of(context).pop()
-                            : Navigator.of(context).pop()),
+                    onTap: () async {
+                      bool result = false;
+                      if (primaryButtonOnTap != null) {
+                        result = await primaryButtonOnTap() ?? false;
+                      }
+                      if (!context.mounted) return Future<void>.value();
+                      Navigator.of(context).pop(result);
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       decoration: const BoxDecoration(
@@ -80,27 +82,31 @@ void showCustomAlert(
                 if (isSecondButton)
                   Expanded(
                     child: InkWell(
-                      onTap: () => secondaryButtonOnTap != null
-                          ? secondaryButtonOnTap()
-                          : Navigator.of(context).pop(),
+                      onTap: () async {
+                        bool result = false;
+                        if (secondaryButtonOnTap != null) {
+                          result = await secondaryButtonOnTap() ?? false;
+                        }
+                        if (!context.mounted) return Future<void>.value();
+                        Navigator.of(context).pop(result);
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         decoration: const BoxDecoration(
-                            // color: Colors.blue,
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(10),
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(10),
+                          ),
+                          border: Border(
+                            left: BorderSide(
+                              color: Colors.black26,
+                              width: 1,
                             ),
-                            border: Border(
-                              left: BorderSide(
-                                color: Colors.black26,
-                                width: 1,
-                              ),
-                            )),
+                          ),
+                        ),
                         child: Text(
                           secondaryButtonText,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            // color: Colors.white,
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontSize: MediaQuery.of(context).size.width * 0.04,

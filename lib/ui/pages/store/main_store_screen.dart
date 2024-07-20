@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langspeak/ui/shared/status/status_main.dart';
 
 class MainStoreScreen extends StatelessWidget {
   const MainStoreScreen({super.key});
@@ -6,13 +7,10 @@ class MainStoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Main Store Screen'),
-          ],
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text('Main Store Screen'), StatusMain()]),
       ),
     );
   }

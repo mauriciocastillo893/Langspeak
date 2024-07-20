@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_state.dart';
+import 'package:langspeak/ui/shared/alert/normal_alert.dart';
 import 'package:langspeak/ui/shared/button/normal_button.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
@@ -176,6 +177,12 @@ class _SignUpState extends State<SignUp> {
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
                 onPressed: () {
                   Navigator.pushNamed(context, "/menu");
+                  if (passwordController.text.length < 6) {
+                    showCustomAlert(context: context,
+                        title: "Error",
+                        message: "Password must be at least 6 characters long",
+                        primaryButtonText: "Ok");
+                  }
                   // if (emailController.text.isNotEmpty &&
                   //     passwordController.text.isNotEmpty &&
                   //     usernameController.text.isNotEmpty) {
