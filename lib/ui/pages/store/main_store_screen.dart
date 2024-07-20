@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:langspeak/ui/shared/status/status_main.dart';
+import 'package:langspeak/ui/shared/status/status_current_plan.dart';
 
 class MainStoreScreen extends StatelessWidget {
   const MainStoreScreen({super.key});
@@ -10,7 +10,7 @@ class MainStoreScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text('Main Store Screen'), StatusMain()]),
+            children: [StatusCurrentPlan()]),
       ),
     );
   }

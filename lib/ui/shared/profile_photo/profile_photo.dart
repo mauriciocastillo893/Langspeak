@@ -4,21 +4,21 @@ import 'package:langspeak/infrastructure/helpers/profile_photo/profile_photo_aux
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePhoto extends StatefulWidget {
-  final double size;
   final double borderWidth;
   final double heightFactor;
   final double widthFactor;
+  final double heigthContainer;
+  final double widthContainer;
   final bool isEditable;
-  final Color borderColor;
 
   const ProfilePhoto({
     super.key,
-    this.size = 80,
     this.borderWidth = 2,
     this.heightFactor = 0.6,
     this.widthFactor = 0.6,
+    this.heigthContainer = 0.12,
+    this.widthContainer = 0.25,
     this.isEditable = true,
-    this.borderColor = Colors.white,
   });
 
   @override
@@ -46,11 +46,10 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.12,
-      width: MediaQuery.of(context).size.width * 0.25,
-      decoration: BoxDecoration(
+      height: MediaQuery.of(context).size.height * widget.heigthContainer,
+      width: MediaQuery.of(context).size.width * widget.widthContainer,
+      decoration: const BoxDecoration(
         // color: Colors.red,
-        borderRadius: BorderRadius.circular(10),
       ),
       child: FractionallySizedBox(
         heightFactor: widget.heightFactor,

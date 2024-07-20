@@ -176,8 +176,8 @@ class _SignInState extends State<SignIn> {
                 onPressed: () async {
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty) {
-                    await _saveCredentials(
-                        emailController.text, emailController.text);
+                    await _saveCredentials(emailController.text.trim(),
+                        emailController.text.trim());
                     emailController.clear();
                     passwordController.clear();
                     if (!context.mounted) return;

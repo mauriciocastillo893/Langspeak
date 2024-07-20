@@ -53,9 +53,6 @@ class _SettingsState extends State<Settings> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
             StatusMain(
               hasChanges: hasChanges,
             ),
