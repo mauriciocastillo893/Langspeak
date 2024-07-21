@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langspeak/ui/shared/status/status_connection.dart';
 
 class MainChatScreen extends StatelessWidget {
   const MainChatScreen({super.key});
@@ -6,9 +7,12 @@ class MainChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Main Chat Screen'),
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          StatusConnection(),
+        ],
       ),
-    );
+    ));
   }
 }

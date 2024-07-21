@@ -39,14 +39,21 @@ class _NormalAppBarState extends State<NormalAppBar> {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 44.0),
             child: Row(
               children: [
-                const Icon(Icons.person, color: Colors.white),
-                const SizedBox(width: 8.0),
-                Text(
-                  _username,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                const Expanded(
+                    flex: 1,
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Icon(Icons.person, color: Colors.white))),
+                Expanded(
+                  flex: 7,
+                  child: NormalText(
+                    text: _username,
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    alignment: Alignment.centerLeft,
                   ),
                 ),
               ],
@@ -58,12 +65,13 @@ class _NormalAppBarState extends State<NormalAppBar> {
                 width: double.infinity,
                 margin: const EdgeInsets.only(top: 8),
                 color: const Color.fromRGBO(21, 106, 142, 1),
-                child: const NormalText(
+                child: NormalText(
                   text: "LANGSPEAK: ONE CLICK FOR THE FUTURE",
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 18.0, vertical: 4.0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.075,
+                      vertical: MediaQuery.of(context).size.width * 0.01),
                   alignment: Alignment.centerLeft,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     color: Colors.white,
                     fontSize: 11,
                     fontWeight: FontWeight.bold,

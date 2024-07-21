@@ -6,6 +6,7 @@ import 'package:langspeak/ui/shared/text/normal_text.dart';
 class StatusConnection extends StatefulWidget {
   final bool hasChanges;
   final double topHeightSizedBox;
+  final double bottomHeightSizedBox;
   final Alignment containerAlignment;
   final Color containerColor;
 
@@ -13,6 +14,7 @@ class StatusConnection extends StatefulWidget {
     super.key,
     this.hasChanges = false,
     this.topHeightSizedBox = 0.03,
+    this.bottomHeightSizedBox = 0.03,
     this.containerAlignment = Alignment.center,
     this.containerColor = const Color.fromRGBO(21, 106, 142, 1),
   });
@@ -86,6 +88,10 @@ class _StatusConnectionState extends State<StatusConnection> {
               ),
             ),
           ],
+        ),
+        SizedBox(
+          height:
+              MediaQuery.of(context).size.height * widget.bottomHeightSizedBox,
         ),
       ]),
     );

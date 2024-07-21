@@ -8,6 +8,7 @@ class NormalText extends StatelessWidget {
   final TextOverflow overflow;
   final EdgeInsets padding;
   final int maxLines;
+  final bool maxLinesUnlimited;
 
   const NormalText({
     super.key,
@@ -19,6 +20,7 @@ class NormalText extends StatelessWidget {
     this.alignment = Alignment.center,
     this.overflow = TextOverflow.clip,
     this.maxLines = 1,
+    this.maxLinesUnlimited = false,
   });
 
   @override
@@ -32,7 +34,9 @@ class NormalText extends StatelessWidget {
           style: textStyle,
           textAlign: textAlign,
           overflow: overflow,
-          maxLines: maxLines,
+          maxLines: maxLinesUnlimited
+              ? DefaultTextStyle.of(context).maxLines
+              : maxLines,
         ),
       ),
     );

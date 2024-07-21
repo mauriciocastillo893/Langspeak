@@ -55,6 +55,7 @@ class _SettingsState extends State<Settings> {
           children: [
             StatusMain(
               hasChanges: hasChanges,
+              bottomHeightSizedBox: 0,
             ),
             Column(
               children: [

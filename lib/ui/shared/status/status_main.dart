@@ -8,6 +8,7 @@ class StatusMain extends StatefulWidget {
   final double containerHeight;
   final double containerWidth;
   final double topHeightSizedBox;
+  final double bottomHeightSizedBox;
   final Color containerColor;
   final Alignment containerAlignment;
   // ProfilePhoto
@@ -20,6 +21,7 @@ class StatusMain extends StatefulWidget {
     this.containerHeight = 0.12,
     this.containerWidth = 0.85,
     this.topHeightSizedBox = 0.03,
+    this.bottomHeightSizedBox = 0.03,
     this.containerColor = const Color.fromRGBO(21, 106, 142, 1),
     this.containerAlignment = Alignment.center,
     this.profilePhotoIsEditable = true,
@@ -58,6 +60,10 @@ class _StatusMainState extends State<StatusMain> {
               )
             ],
           ),
+        ),
+        SizedBox(
+          height:
+              MediaQuery.of(context).size.height * widget.bottomHeightSizedBox,
         ),
       ]),
     );
