@@ -45,7 +45,7 @@ class _StatusConnectionState extends State<StatusConnection> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   NormalText(
-                    text: "Current Connection",
+                    text: "Current Conn.",
                     textStyle: TextStyle(
                       color: Colors.white,
                       fontSize: MediaQuery.of(context).size.width * 0.04,

@@ -5,7 +5,7 @@ class NormalTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final bool enabled;
-  final double width;
+  final double? width;
   final double height;
   final double fontSize;
   final Color colorBorder;
@@ -17,6 +17,7 @@ class NormalTextField extends StatefulWidget {
   final Alignment alignment;
   final Icon? suffixIcon;
   final VoidCallback? onIconPressed;
+  final ValueChanged<String>? onChanged;
   final TextEditingController controller;
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
@@ -40,6 +41,7 @@ class NormalTextField extends StatefulWidget {
     this.alignment = Alignment.center,
     this.suffixIcon,
     this.onIconPressed,
+    this.onChanged,
     this.nextFocusNode,
     required this.controller,
     required this.focusNode,
@@ -55,11 +57,12 @@ class _NormalTextFieldState extends State<NormalTextField> {
   @override
   void initState() {
     super.initState();
-    if (widget.obscureText) {
-      obscureTextLocal = true;
-    } else {
-      obscureTextLocal = !(widget.suffixIcon != null);
-    }
+    // if (widget.obscureText) {
+    //   obscureTextLocal = true;
+    // } else {
+    //   obscureTextLocal = !(widget.suffixIcon != null);
+    // }
+    obscureTextLocal = widget.obscureText;
   }
 
   void toggleObscureText() {
@@ -90,6 +93,7 @@ class _NormalTextFieldState extends State<NormalTextField> {
               }
             },
             onTapOutside: (event) => widget.focusNode.unfocus(),
+            onChanged: widget.onChanged,
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: TextStyle(
