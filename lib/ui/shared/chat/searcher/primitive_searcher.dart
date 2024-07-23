@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
 
-class SearcherPrimitive extends StatefulWidget {
+class PrimitiveSearcher extends StatefulWidget {
   final ValueChanged<String> onSearch;
 
-  const SearcherPrimitive({super.key, required this.onSearch});
+  const PrimitiveSearcher({super.key, required this.onSearch});
 
   @override
-  State<SearcherPrimitive> createState() => _SearcherPrimitiveState();
+  State<PrimitiveSearcher> createState() => _PrimitiveSearcherState();
 }
 
-class _SearcherPrimitiveState extends State<SearcherPrimitive> {
+class _PrimitiveSearcherState extends State<PrimitiveSearcher> {
   final TextEditingController _searcherController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool _hasFocus = false;

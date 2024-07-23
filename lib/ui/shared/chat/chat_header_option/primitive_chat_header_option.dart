@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 
-class ChatHeaderOptionPrimitive extends StatelessWidget {
-  const ChatHeaderOptionPrimitive({
+class PrimitiveChatHeaderOption extends StatelessWidget {
+  const PrimitiveChatHeaderOption({
     super.key,
     required this.iconDefault,
     required this.iconDefaultSelected,

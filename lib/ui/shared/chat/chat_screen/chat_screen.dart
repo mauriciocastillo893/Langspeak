@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:langspeak/ui/shared/chat/chat_header_option/chat_header_option_primitive.dart';
-import 'package:langspeak/ui/shared/chat/searcher/searcher_primitive.dart';
+import 'package:langspeak/ui/shared/chat/chat_header_option/primitive_chat_header_option.dart';
+import 'package:langspeak/ui/shared/chat/person_chat/primitive_person_chat.dart';
+import 'package:langspeak/ui/shared/chat/searcher/primitive_searcher.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -43,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 height: MediaQuery.of(context).size.width * 0.1,
                 child: Row(
                   children: [
-                    ChatHeaderOptionPrimitive(
+                    PrimitiveChatHeaderOption(
                       iconDefault: Icons.chat_outlined,
                       iconDefaultSelected: Icons.chat,
                       text: 'Chats',
@@ -51,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () => _onSelected(0),
                       isSelected: _selectedIndex == 0,
                     ),
-                    ChatHeaderOptionPrimitive(
+                    PrimitiveChatHeaderOption(
                       iconDefault: Icons.groups_outlined,
                       iconDefaultSelected: Icons.groups,
                       text: 'Groups',
@@ -59,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () => _onSelected(1),
                       isSelected: _selectedIndex == 1,
                     ),
-                    ChatHeaderOptionPrimitive(
+                    PrimitiveChatHeaderOption(
                       iconDefault: Icons.memory_outlined,
                       iconDefaultSelected: Icons.memory,
                       text: 'IA Chat',
@@ -75,20 +76,25 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: FractionallySizedBox(
                       heightFactor: 0.6,
                       widthFactor: 1,
-                      child: SearcherPrimitive(
+                      child: PrimitiveSearcher(
                         onSearch: _onSearch,
                       ))),
               Expanded(
                   flex: 1,
                   child: Container(
+                    width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
-                      // color: Color.fromRGBO(0, 102, 146, 1),
-                      color: Color.fromRGBO(21, 106, 142, 1),
+                      color: Color.fromRGBO(0, 102, 146, 1),
+                      // color: Color.fromRGBO(21, 106, 142, 1),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
                     ),
+                    child: const FractionallySizedBox(
+                        widthFactor: 0.98,
+                        heightFactor: 0.98,
+                        child: PrimitivePersonChat()),
                   )),
             ],
           ),
