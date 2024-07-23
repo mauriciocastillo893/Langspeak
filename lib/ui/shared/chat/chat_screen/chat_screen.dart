@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:langspeak/ui/shared/chat/chat_cards/primitive_group_chat.dart';
 import 'package:langspeak/ui/shared/chat/chat_header_option/primitive_chat_header_option.dart';
-import 'package:langspeak/ui/shared/chat/person_chat/primitive_person_chat.dart';
+import 'package:langspeak/ui/shared/chat/chat_screen/simulated_array.dart';
+import 'package:langspeak/ui/shared/chat/chat_cards/primitive_person_chat.dart';
 import 'package:langspeak/ui/shared/chat/searcher/primitive_searcher.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final int index;
+  final ValueChanged<int> function;
+
+  const ChatScreen({super.key, required this.index, required this.function});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -17,6 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       _selectedIndex = index;
     });
+    widget.function(index);
   }
 
   void _onSearch(String text) {
@@ -30,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
         heightFactor: 1,
         widthFactor: 1,
         child: Container(
-          padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+          padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
           decoration: const BoxDecoration(
             color: Color.fromRGBO(28, 156, 184, 1),
             borderRadius: BorderRadius.only(
@@ -78,6 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       widthFactor: 1,
                       child: PrimitiveSearcher(
                         onSearch: _onSearch,
+                        isEnabled: _selectedIndex == 0,
                       ))),
               Expanded(
                   flex: 1,
@@ -91,10 +98,16 @@ class _ChatScreenState extends State<ChatScreen> {
                         topRight: Radius.circular(10),
                       ),
                     ),
-                    child: const FractionallySizedBox(
+                    child: FractionallySizedBox(
                         widthFactor: 0.98,
                         heightFactor: 0.98,
-                        child: PrimitivePersonChat()),
+                        child: _selectedIndex == 0
+                            ? PrimitivePersonChat(
+                                arrayToDisplay: SimulatedArray.messageList,
+                              )
+                            : _selectedIndex == 1
+                                ? const PrimitiveGroupChat(arrayToDisplay: [])
+                                : null),
                   )),
             ],
           ),

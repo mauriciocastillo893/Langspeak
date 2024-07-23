@@ -106,6 +106,12 @@ class _NormalTextFieldState extends State<NormalTextField> {
                   color: widget.colorBorder,
                 ),
               ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                  color: widget.colorBorder,
+                ),
+              ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius + 2.5),
                 borderSide: BorderSide(

@@ -3,8 +3,10 @@ import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
 
 class PrimitiveSearcher extends StatefulWidget {
   final ValueChanged<String> onSearch;
+  final bool isEnabled;
 
-  const PrimitiveSearcher({super.key, required this.onSearch});
+  const PrimitiveSearcher(
+      {super.key, required this.onSearch, this.isEnabled = true});
 
   @override
   State<PrimitiveSearcher> createState() => _PrimitiveSearcherState();
@@ -59,6 +61,7 @@ class _PrimitiveSearcherState extends State<PrimitiveSearcher> {
               controller: _searcherController,
               focusNode: _focusNode,
               hintText: 'Search',
+              enabled: widget.isEnabled,
               suffixIcon: _hasFocus ? const Icon(Icons.close) : null,
               colorBorder: Colors.transparent,
               colorBackground: Colors.transparent,

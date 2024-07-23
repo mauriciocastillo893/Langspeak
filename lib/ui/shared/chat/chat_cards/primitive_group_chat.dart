@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:langspeak/domain/models/message_model/message_model.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 
-class PrimitivePersonChat extends StatefulWidget {
-  const PrimitivePersonChat({super.key});
+class PrimitiveGroupChat extends StatefulWidget {
+  final List<MessageModel> arrayToDisplay;
+
+  const PrimitiveGroupChat({super.key, required this.arrayToDisplay});
 
   @override
-  State<PrimitivePersonChat> createState() => _PrimitivePersonChatState();
+  State<PrimitiveGroupChat> createState() => _PrimitiveGroupChatState();
 }
 
-class _PrimitivePersonChatState extends State<PrimitivePersonChat> {
+class _PrimitiveGroupChatState extends State<PrimitiveGroupChat> {
   @override
   Widget build(BuildContext context) {
+    if (widget.arrayToDisplay.isEmpty) {
+      return const SizedBox(
+        child: NormalText(
+          text: "Groups is not available right now",
+          // text: "Join or create a new group chat",
+        ),
+      );
+    }
     return ListView.builder(
-        itemCount: 10,
+        itemCount: widget.arrayToDisplay.length,
         itemBuilder: (context, index) {
+          final message = widget.arrayToDisplay[index];
           return Container(
               margin: EdgeInsets.only(top: index == 0 ? 0 : 2.5),
               height: MediaQuery.of(context).size.width * 0.14,
@@ -46,12 +58,13 @@ class _PrimitivePersonChatState extends State<PrimitivePersonChat> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const NormalText(
-                            text: "Mauricio Castillo",
+                          NormalText(
+                            text: message.whoSendName.toString(),
                             alignment: Alignment.centerLeft,
                           ),
                           NormalText(
-                              text: "Last message: Hi, how are you?",
+                              text:
+                                  "Last message: ${message.audio != null ? 'Audio' : message.text}",
                               alignment: Alignment.centerLeft,
                               textStyle: TextStyle(
                                   color: Colors.white,
@@ -70,7 +83,8 @@ class _PrimitivePersonChatState extends State<PrimitivePersonChat> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             NormalText(
-                              text: "19/10/2024",
+                              text:
+                                  "${message.date.day}/${message.date.month}/${message.date.year}",
                               padding: const EdgeInsets.only(right: 10),
                               alignment: Alignment.centerRight,
                               textStyle: TextStyle(
@@ -79,7 +93,8 @@ class _PrimitivePersonChatState extends State<PrimitivePersonChat> {
                                       0.025),
                             ),
                             NormalText(
-                                text: "09:50 PM",
+                                text:
+                                    "${message.date.hour}:${message.date.minute}",
                                 padding: const EdgeInsets.only(right: 10),
                                 alignment: Alignment.centerRight,
                                 textStyle: TextStyle(
