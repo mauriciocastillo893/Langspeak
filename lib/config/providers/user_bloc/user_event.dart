@@ -68,3 +68,49 @@ class SignUpErrorEvent extends UserEvent {
   @override
   List<Object> get props => [message];
 }
+
+class UpdateUserCredentialsEvent extends UserEvent {
+  final String email;
+  final String username;
+  final String password;
+  final String profilePicturePath;
+  const UpdateUserCredentialsEvent(
+      {required this.email,
+      required this.username,
+      required this.password,
+      required this.profilePicturePath});
+
+  @override
+  List<Object> get props => [email, username, password, profilePicturePath];
+}
+
+class UpdateUserCredentialsLoadingEvent extends UserEvent {}
+
+class UpdateUserCredentialsSuccessEvent extends UserEvent {
+  final String message;
+  const UpdateUserCredentialsSuccessEvent({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class UpdateUserCredentialsErrorEvent extends UserEvent {
+  final String message;
+  const UpdateUserCredentialsErrorEvent({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+// SIGN OUT
+class SignOutUserEvent extends UserEvent {}
+
+class SignOutUserLoadingEvent extends UserEvent {}
+
+class SignOutUserSuccessEvent extends UserEvent {
+  final String message;
+  const SignOutUserSuccessEvent({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

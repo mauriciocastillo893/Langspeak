@@ -1,4 +1,15 @@
-abstract class UserRepository{
-  Future<bool> signInUser({required String email, required String password});
-  Future<bool> signUpUser({required String email, required String username, required String password});
+abstract class UserRepository {
+  Future<Map<String, dynamic>> signInUser(
+      {required String email, required String password});
+  Future<Map<String, dynamic>> signUpUser(
+      {required String email,
+      required String username,
+      required String password});
+  Future<Map<String, dynamic>> updateUserCredentials(
+      {required String email,
+      required String username,
+      required String password,
+      required String city,
+      required String profilePicturePath});
+  Future<Map<String, dynamic>> signOutUser();
 }

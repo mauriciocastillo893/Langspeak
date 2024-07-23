@@ -1,9 +1,8 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:langspeak/ui/shared/alert/normal_alert.dart';
 import 'package:langspeak/ui/shared/snack_bar/normal_snack_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSharedPreferences {
   String email;
@@ -29,11 +28,23 @@ class UserSharedPreferences {
   Future<Map<String, String>> getUserCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return Map<String, String>.from({
+      'uuid': prefs.getString('uuid') ?? "",
       'email': prefs.getString('email') ?? "",
       'password': prefs.getString('password') ?? "",
       'username': prefs.getString('username') ?? "",
+      'token': prefs.getString('token') ?? "",
       'profile_image': prefs.getString('profile_image') ?? "",
     });
+  }
+
+  static Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  static Future<String?> getUuid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('uuid');
   }
 
   static void copyToClipboard(
@@ -46,6 +57,14 @@ class UserSharedPreferences {
         message: message ?? "Copied to Clipboard",
       );
     });
+  }
+
+  static void showSnockBar(
+      {required BuildContext context, required String message}) {
+    showSnackBar(
+      context: context,
+      message: message,
+    );
   }
 
   static Future<bool> saveNewCredentials(
@@ -90,5 +109,17 @@ class UserSharedPreferences {
   static Future<void> clearUserCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+  }
+
+  static Future<Map> getPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return {
+      'uuid': prefs.getString('uuid') ?? "",
+      'email': prefs.getString('email') ?? "",
+      'password': prefs.getString('password') ?? "",
+      'username': prefs.getString('username') ?? "",
+      'token': prefs.getString('token') ?? "",
+      'profile_image': prefs.getString('profile_image') ?? "",
+    };
   }
 }

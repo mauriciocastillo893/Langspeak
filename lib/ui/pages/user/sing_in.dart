@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_state.dart';
+import 'package:langspeak/infrastructure/helpers/validators/email_validator.dart';
 import 'package:langspeak/ui/shared/alert/normal_alert.dart';
 import 'package:langspeak/ui/shared/button/normal_button.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:langspeak/config/providers/user_bloc/user_event.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -22,15 +23,17 @@ class _SignInState extends State<SignIn> {
   final focusNodeEmail = FocusNode();
   final focusNodePassword = FocusNode();
 
-  Future<void> _saveCredentials(String email, String username) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('email', email);
-    await prefs.setString('username', username);
-  }
+  // Future<void> _saveCredentials(String email, String username) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('email', email);
+  //   await prefs.setString('username', username);
+  // }
 
   @override
   void initState() {
     FlutterNativeSplash.remove();
+    final userBloc = context.read<UserBloc>();
+    userBloc.add(UserInitialEvent());
     super.initState();
   }
 
@@ -45,6 +48,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = context.watch<UserBloc>();
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -90,10 +94,14 @@ class _SignInState extends State<SignIn> {
                     );
                   } else if (state is SignInSuccessState) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
+                      final userBloc = context.read<UserBloc>();
+                      userBloc.add(UserInitialEvent());
+                      emailController.clear();
+                      passwordController.clear();
                       Navigator.pushNamed(context, '/menu');
                     });
                     return NormalText(
-                      text: "Successful login, welcome to Langspeak!",
+                      text: state.message,
                       textAlign: TextAlign.center,
                       textStyle: TextStyle(
                         color: const Color.fromRGBO(255, 249, 222, 1),
@@ -176,12 +184,37 @@ class _SignInState extends State<SignIn> {
                 onPressed: () async {
                   if (emailController.text.isNotEmpty &&
                       passwordController.text.isNotEmpty) {
-                    await _saveCredentials(emailController.text.trim(),
+                    final result = await EmailValidator.validateEmail(
                         emailController.text.trim());
-                    emailController.clear();
-                    passwordController.clear();
                     if (!context.mounted) return;
-                    Navigator.pushNamed(context, "/menu");
+                    if (!result['status']) {
+                      showCustomAlert(
+                        context: context,
+                        title: "Invalid Email",
+                        message: result['message'],
+                        primaryButtonText: "OK",
+                        icon: const Icon(Icons.highlight_remove_rounded,
+                            color: Colors.red, size: 40),
+                      );
+                      return;
+                    }
+                    if (passwordController.text.trim().length < 8) {
+                      showCustomAlert(
+                        context: context,
+                        title: "Invalid Password",
+                        message:
+                            "Password must be greater than or equal to 8 characters",
+                        primaryButtonText: "OK",
+                        icon: const Icon(Icons.highlight_remove_rounded,
+                            color: Colors.red, size: 40),
+                      );
+                      return;
+                    }
+                    userBloc.add(SignInUserEvent(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim()));
+                    // if (!context.mounted) return;
+                    // Navigator.pushNamed(context, "/menu");
                   } else {
                     showCustomAlert(
                       context: context,
@@ -193,14 +226,6 @@ class _SignInState extends State<SignIn> {
                           color: Colors.red, size: 40),
                     );
                   }
-                  //   BlocProvider.of<UserBloc>(context).add(SignInUserEvent(
-                  //       email: emailController.text,
-                  //       password: passwordController.text));
-                  // } else {
-                  //   BlocProvider.of<UserBloc>(context).add(
-                  //       const SignInErrorEvent(
-                  //           message: "Verifica que esten bien tus datos"));
-                  // }
                 },
               ),
               NormalText(

@@ -7,10 +7,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final UserUsecase userUsecase;
 
   UserBloc(this.userUsecase) : super(UserInitialState()) {
+    on<UserInitialEvent>(_onUserInitial);
     on<SignInLoadingEvent>(_onLoadingSignIn);
     on<SignUpLoadingEvent>(_onLoadingSignUp);
     on<SignInUserEvent>(_onSignIn);
     on<SignUpUserEvent>(_onSignUp);
+    on<UpdateUserCredentialsEvent>(_onUserUpdateCredentials);
+    // on<UserSignOutEvent>();
+  }
+
+  Future<void> _onUserInitial(
+      UserInitialEvent event, Emitter<UserState> emit) async {
+    emit(UserInitialState());
   }
 
   Future<void> _onLoadingSignIn(
@@ -28,10 +36,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final result = await userUsecase.signInUser(
         email: event.email, password: event.password);
     try {
-      if (result) {
-        emit(const SignInSuccessState(message: "Sign in success :)"));
+      print(result);
+      if (result['status']) {
+        emit(SignInSuccessState(message: result['message']));
       } else {
-        emit(const SignUpErrorState(message: "Request failure :("));
+        emit(SignInErrorState(message: result['message']));
       }
     } catch (e) {
       emit(SignInErrorState(message: e.toString()));
@@ -43,13 +52,35 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final result = await userUsecase.signUpUser(
         email: event.email, username: event.username, password: event.password);
     try {
-      if (result) {
-        emit(const SignUpSuccessState(message: "Sign up success :)"));
+      if (result['status']) {
+        emit(SignUpSuccessState(message: result['message']));
       } else {
-        emit(const SignUpErrorState(message: "Request failure :("));
+        emit(SignUpErrorState(message: result['message']));
       }
     } catch (e) {
       emit(SignUpErrorState(message: e.toString()));
+    }
+  }
+
+  Future<void> _onUserUpdateCredentials(
+      UpdateUserCredentialsEvent event, Emitter<UserState> emit) async {
+    final result = await userUsecase.updateUserCredentials(
+        email: event.email,
+        username: event.username,
+        password: event.password,
+        profilePicturePath: "",
+        city: "Earth");
+    try {
+      print("Result form update user credentials: $result");
+      if (result['status']) {
+        emit(UpdateUserCredentialsSuccessState(message: result['message']));
+      } else {
+        emit(UpdateUserCredentialsErrorState(message: result['message']));
+      }
+      Future.delayed(Duration(seconds: 4));
+      emit(UserInitialState());
+    } catch (e) {
+      emit(UpdateUserCredentialsErrorState(message: e.toString()));
     }
   }
 }

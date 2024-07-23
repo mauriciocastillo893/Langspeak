@@ -68,3 +68,49 @@ class SignUpErrorState extends UserState {
   @override
   List<Object> get props => [message];
 }
+
+class UserUpdateCredentialsState extends UserState {
+  final String email;
+  final String username;
+  final String password;
+  final String profilePicturePath;
+  const UserUpdateCredentialsState(
+      {required this.email,
+      required this.username,
+      required this.password,
+      required this.profilePicturePath});
+
+  @override
+  List<Object> get props => [email, username, password, profilePicturePath];
+}
+
+class UpdateUserCredentialsLoadingState extends UserState {}
+
+class UpdateUserCredentialsSuccessState extends UserState {
+  final String message;
+  const UpdateUserCredentialsSuccessState({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class UpdateUserCredentialsErrorState extends UserState {
+  final String message;
+  const UpdateUserCredentialsErrorState({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+// SIGN OUT
+class UserSignOutState extends UserState {}
+
+class SignOutUserLoadingState extends UserState {}
+
+class SignOutUserSuccessState extends UserState {
+  final String message;
+  const SignOutUserSuccessState({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

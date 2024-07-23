@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_state.dart';
+import 'package:langspeak/infrastructure/helpers/validators/email_validator.dart';
 import 'package:langspeak/ui/shared/alert/normal_alert.dart';
 import 'package:langspeak/ui/shared/button/normal_button.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
+import 'package:langspeak/config/providers/user_bloc/user_event.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -17,13 +19,36 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   final usernameController = TextEditingController();
   final focusNodeEmail = FocusNode();
   final focusNodePassword = FocusNode();
+  final focusNodeConfirmPassword = FocusNode();
   final focusNodeUsername = FocusNode();
 
   @override
+  void initState() {
+    final userBloc = context.read<UserBloc>();
+    userBloc.add(UserInitialEvent());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    focusNodeUsername.dispose();
+    focusNodeEmail.dispose();
+    focusNodePassword.dispose();
+    focusNodeConfirmPassword.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final userBloc = context.watch<UserBloc>();
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -69,10 +94,15 @@ class _SignUpState extends State<SignUp> {
                     );
                   } else if (state is SignUpSuccessState) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pushNamed(context, '/menu');
+                      final userBloc = context.read<UserBloc>();
+                      userBloc.add(UserInitialEvent());
+                      usernameController.clear();
+                      emailController.clear();
+                      passwordController.clear();
+                      Navigator.pushNamed(context, '/');
                     });
                     return NormalText(
-                      text: "Successful registration, welcome to Langspeak!",
+                      text: state.message,
                       textAlign: TextAlign.center,
                       textStyle: TextStyle(
                         color: const Color.fromRGBO(255, 249, 222, 1),
@@ -164,6 +194,27 @@ class _SignUpState extends State<SignUp> {
               NormalTextField(
                 controller: passwordController,
                 focusNode: focusNodePassword,
+                nextFocusNode: focusNodeConfirmPassword,
+                hintText: "",
+                textStyle: TextStyle(
+                    color: const Color.fromRGBO(255, 249, 222, 1),
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                    fontFamily: 'Inter'),
+                suffixIcon: const Icon(Icons.remove_red_eye_rounded),
+                obscureText: true,
+              ),
+              NormalText(
+                text: "Confirm Password",
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 30, top: 20, bottom: 2.5),
+                textStyle: TextStyle(
+                    color: const Color.fromRGBO(255, 249, 222, 1),
+                    fontSize: MediaQuery.of(context).size.width * 0.04,
+                    fontFamily: 'Inter'),
+              ),
+              NormalTextField(
+                controller: confirmPasswordController,
+                focusNode: focusNodeConfirmPassword,
                 hintText: "",
                 textStyle: TextStyle(
                     color: const Color.fromRGBO(255, 249, 222, 1),
@@ -175,26 +226,66 @@ class _SignUpState extends State<SignUp> {
               NormalButton(
                 buttonText: "Sign Up",
                 padding: const EdgeInsets.only(left: 30, right: 30, top: 35),
-                onPressed: () {
-                  Navigator.pushNamed(context, "/menu");
-                  if (passwordController.text.length < 6) {
-                    showCustomAlert(context: context,
-                        title: "Error",
-                        message: "Password must be at least 6 characters long",
-                        primaryButtonText: "Ok");
+                onPressed: () async {
+                  if (emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty &&
+                      confirmPasswordController.text.isNotEmpty &&
+                      usernameController.text.isNotEmpty) {
+                    final result = await EmailValidator.validateEmail(
+                        emailController.text.trim());
+                    if (!context.mounted) return;
+                    if (!result['status']) {
+                      showCustomAlert(
+                        context: context,
+                        title: "Invalid Email",
+                        message: result['message'],
+                        primaryButtonText: "OK",
+                        icon: const Icon(Icons.highlight_remove_rounded,
+                            color: Colors.red, size: 40),
+                      );
+                      return;
+                    }
+                    if (passwordController.text.trim().length < 8) {
+                      showCustomAlert(
+                        context: context,
+                        title: "Invalid Password",
+                        message:
+                            "Password must be greater than or equal to 8 characters",
+                        primaryButtonText: "OK",
+                        icon: const Icon(Icons.highlight_remove_rounded,
+                            color: Colors.red, size: 40),
+                      );
+                      return;
+                    }
+                    if (passwordController.text.trim() !=
+                        confirmPasswordController.text.trim()) {
+                      showCustomAlert(
+                        context: context,
+                        title: "Password Mismatch",
+                        message: "Passwords do not match, make sure they match",
+                        primaryButtonText: "OK",
+                        icon: const Icon(Icons.highlight_remove_rounded,
+                            color: Colors.red, size: 40),
+                      );
+                      return;
+                    }
+                    userBloc.add(SignUpUserEvent(
+                        username: usernameController.text.trim(),
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim()));
+                    // if (!context.mounted) return;
+                    // Navigator.pushNamed(context, "/menu");
+                  } else {
+                    showCustomAlert(
+                      context: context,
+                      title: "Invalid Credentials",
+                      message:
+                          "Please enter your credentials, make sure not to leave any field empty.",
+                      primaryButtonText: "OK",
+                      icon: const Icon(Icons.highlight_remove_rounded,
+                          color: Colors.red, size: 40),
+                    );
                   }
-                  // if (emailController.text.isNotEmpty &&
-                  //     passwordController.text.isNotEmpty &&
-                  //     usernameController.text.isNotEmpty) {
-                  //   BlocProvider.of<UserBloc>(context).add(SignUpUserEvent(
-                  //       email: emailController.text,
-                  //       password: passwordController.text,
-                  //       username: usernameController.text));
-                  // } else {
-                  //   BlocProvider.of<UserBloc>(context).add(
-                  //       const SignUpErrorEvent(
-                  //           message: "Verifica que esten bien tus datos"));
-                  // }
                 },
               ),
               NormalText(

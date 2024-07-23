@@ -1,60 +1,34 @@
-import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
+import 'dart:io';
 
-class EmailValidator extends StatefulWidget {
-  const EmailValidator({super.key});
+class EmailValidator {
+  static bool isValidEmail(String email) {
+    final RegExp emailRegExp = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegExp.hasMatch(email);
+  }
 
-  @override
-  State<EmailValidator> createState() => _EmailValidatorState();
-}
-
-class _EmailValidatorState extends State<EmailValidator> {
-  final _formKey = GlobalKey<FormState>();
-  String? _email;
-
-  void _validateAndSave() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Email is valid: $_email')));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Invalid email')));
+  static Future<bool> domainExists(String email) async {
+    final domain = email.split('@').last;
+    try {
+      final result = await InternetAddress.lookup(domain, type: InternetAddressType.any);
+      return result.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Email Validation'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: ValidationBuilder().email().maxLength(50).build(),
-                onSaved: (value) {
-                  _email = value;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _validateAndSave,
-                child: const Text('Validate'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  static Future<Map<String, dynamic>> validateEmail(String email) async {
+    bool isValid = isValidEmail(email);
+    if (!isValid) {
+      return {'status': false, 'message': 'Invalid email format'};
+    }
+
+    bool domainExistsResult = await domainExists(email);
+    if (!domainExistsResult) {
+      return {'status': false, 'message': 'Email domain does not exist'};
+    }
+
+    return {'status': true, 'message': 'Email is valid'};
   }
 }
-
-void main() => runApp(MaterialApp(
-      home: EmailValidator(),
-    ));
