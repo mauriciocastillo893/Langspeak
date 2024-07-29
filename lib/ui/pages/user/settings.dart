@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_bloc.dart';
-import 'package:langspeak/config/providers/user_bloc/user_state.dart';
 import 'package:langspeak/infrastructure/helpers/shared_preferences/user_shared_preferences.dart';
 import 'package:langspeak/infrastructure/helpers/validators/email_validator.dart';
+import 'package:langspeak/ui/pages/user/graphics.dart';
 import 'package:langspeak/ui/shared/alert/normal_alert.dart';
 import 'package:langspeak/ui/shared/button/normal_button.dart';
+import 'package:langspeak/ui/shared/graphics/create_data.dart';
 import 'package:langspeak/ui/shared/status/status_main.dart';
 import 'package:langspeak/ui/shared/text/normal_text.dart';
 import 'package:langspeak/ui/shared/text_field/normal_text_field.dart';
@@ -25,6 +26,7 @@ class _SettingsState extends State<Settings> {
   final usernameController = TextEditingController();
   final emailFocusNode = FocusNode();
   final usernameFocusNode = FocusNode();
+  // final data = createData();
   String _email = "";
   String _username = "";
   bool hasChanges = false;
@@ -161,12 +163,25 @@ class _SettingsState extends State<Settings> {
                   colorTextButton: const Color.fromRGBO(255, 249, 222, 1),
                   colorBackgroundButton: const Color.fromRGBO(28, 156, 184, 1),
                   onPressed: () => Navigator.pushNamed(context, '/'),
+                ),
+                NormalButton(
+                  buttonText: "SHOW GRAPHICS",
+                  padding: const EdgeInsets.only(top: 100, left: 30, right: 30),
+                  colorBackgroundButton: const Color.fromRGBO(51, 56, 78, 1),
+                  colorBorderButton: const Color.fromRGBO(28, 156, 184, 1),
+                  // onPressed: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  // SimpleTimeSeriesChart(data, animate: true),
+                  // )
+                  // )
                 )
               ],
             ),
             // BlocBuilder<UserBloc, UserState>(builder: (context, state) {
             //   if (state is UpdateUserCredentialsSuccessState) {
-            //     print("New credentials");
+            //     print("New credentials");}
             //     _setUserCredentials();
             //     return Container();
             //   } else {

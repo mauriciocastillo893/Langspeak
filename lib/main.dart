@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:langspeak/config/providers/chat_bloc/chat_bloc.dart';
 import 'package:langspeak/config/providers/user_bloc/user_bloc.dart';
 import 'package:langspeak/domain/usecase/user_usecase/user_usecase.dart';
 import 'package:langspeak/infrastructure/driven_adapters/api/user_api/user_api.dart';
@@ -8,9 +10,10 @@ import 'package:langspeak/ui/pages/user/sign_up.dart';
 import 'package:langspeak/ui/pages/user/sing_in.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-void main() {
+void main() async {
   FlutterNativeSplash.preserve(
       widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -26,9 +29,11 @@ class MyApp extends StatelessWidget {
           create: (context) => UserBloc(
             UserUsecase(userApi),
           ),
-        )
+        ),
+        BlocProvider(create: (context) => ChatBloc())
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Langspeak',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(

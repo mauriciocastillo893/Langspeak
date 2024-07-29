@@ -106,6 +106,14 @@ class UserSharedPreferences {
     await prefs.setString(variable, value);
   }
 
+  // class UserSharedPreferences {
+  // static Future<void> setNewPrefs(
+  //     {required String variable, required String value}) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String encryptedValue = SecureStorage.encryptData(value);
+  //   await prefs.setString(variable, encryptedValue);
+  // }
+
   static Future<void> clearUserCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();

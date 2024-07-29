@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:langspeak/ui/shared/chat/chat_cards/primitive_ai_chat.dart';
 import 'package:langspeak/ui/shared/chat/chat_cards/primitive_group_chat.dart';
 import 'package:langspeak/ui/shared/chat/chat_header_option/primitive_chat_header_option.dart';
+import 'package:langspeak/ui/shared/chat/chat_screen/header_ai.dart';
 import 'package:langspeak/ui/shared/chat/chat_screen/simulated_array.dart';
 import 'package:langspeak/ui/shared/chat/chat_cards/primitive_person_chat.dart';
 import 'package:langspeak/ui/shared/chat/searcher/primitive_searcher.dart';
@@ -58,14 +60,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () => _onSelected(0),
                       isSelected: _selectedIndex == 0,
                     ),
-                    PrimitiveChatHeaderOption(
-                      iconDefault: Icons.groups_outlined,
-                      iconDefaultSelected: Icons.groups,
-                      text: 'Groups',
-                      margin: const EdgeInsets.only(right: 5, left: 5),
-                      onPressed: () => _onSelected(1),
-                      isSelected: _selectedIndex == 1,
-                    ),
+                    // PrimitiveChatHeaderOption(
+                    //   iconDefault: Icons.groups_outlined,
+                    //   iconDefaultSelected: Icons.groups,
+                    //   text: 'Groups',
+                    //   margin: const EdgeInsets.only(right: 5, left: 5),
+                    //   onPressed: () => _onSelected(1),
+                    //   isSelected: _selectedIndex == 1,
+                    // ),
                     PrimitiveChatHeaderOption(
                       iconDefault: Icons.memory_outlined,
                       iconDefaultSelected: Icons.memory,
@@ -82,10 +84,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: FractionallySizedBox(
                       heightFactor: 0.6,
                       widthFactor: 1,
-                      child: PrimitiveSearcher(
-                        onSearch: _onSearch,
-                        isEnabled: _selectedIndex == 0,
-                      ))),
+                      child: _selectedIndex != 2
+                          ? PrimitiveSearcher(
+                              onSearch: _onSearch,
+                              isEnabled: _selectedIndex == 0,
+                            )
+                          : const HeaderAI())),
               Expanded(
                   flex: 1,
                   child: Container(
@@ -107,7 +111,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               )
                             : _selectedIndex == 1
                                 ? const PrimitiveGroupChat(arrayToDisplay: [])
-                                : null),
+                                : const PrimitiveAIChat()),
                   )),
             ],
           ),

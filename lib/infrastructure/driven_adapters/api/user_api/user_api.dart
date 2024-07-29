@@ -89,7 +89,7 @@ class UserApi extends UserRepository {
         options: Options(
           validateStatus: (status) {
             return status! <
-                500; // Permitir manejar todos los códigos de estado menos 500+ en el try
+                500;
           },
         ),
       );
